@@ -22,6 +22,7 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
         private void GenerateProductData()
         {
             int id = 0;
+
             _products.Add(new Product(++id, 10, 92.50, "Echo Dot", "(2nd Generation) - Black"));
             _products.Add(new Product(++id, 20, 9.99, "Anker 3ft / 0.9m Nylon Braided", "Tangle-Free Micro USB Cable"));
             _products.Add(new Product(++id, 30, 69.99, "JVC HAFX8R Headphone", "Riptidz, In-Ear"));
@@ -32,10 +33,14 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
         /// <summary>
         /// Get all products from the inventory
         /// </summary>
-        public Product[] GetAllProducts()
+        public List<Product> GetAllProducts()
         {
-            List<Product> list = _products.Where(p => p.Stock > 0).OrderBy(p => p.Name).ToList();
-            return list.ToArray();
+            // Correction:
+            // Return a List<Product> directly instead of converting it to a Product[].
+            return _products
+                .Where(p => p.Stock > 0)
+                .OrderBy(p => p.Name)
+                .ToList();
         }
 
         /// <summary>
@@ -47,7 +52,9 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
             product.Stock = product.Stock - quantityToRemove;
 
             if (product.Stock == 0)
+            {
                 _products.Remove(product);
+            }
         }
     }
 }
