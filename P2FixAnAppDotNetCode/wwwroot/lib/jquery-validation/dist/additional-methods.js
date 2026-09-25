@@ -914,10 +914,15 @@ $.validator.addMethod("stateUS", function(value, element, options) {
 },
 "Please specify a valid state");
 
-// TODO check if value starts with <, otherwise don't try stripping anything
-$.validator.addMethod("strippedminlength", function(value, element, param) {
-	return $(value).text().length >= param;
-}, $.validator.format("Please enter at least {0} characters"));
+	// FIX: Only strip HTML when the value starts with "<".
+	// Plain text is measured directly without being parsed by jQuery.
+	$.validator.addMethod("strippedminlength", function (value, element, param) {
+		var strippedValue = value.charAt(0) === "<"
+			? $(value).text()
+			: value;
+
+		return strippedValue.length >= param;
+	}, $.validator.format("Please enter at least {0} characters"));
 
 $.validator.addMethod("time", function(value, element) {
 	return this.optional(element) || /^([01]\d|2[0-3]|[0-9])(:[0-5]\d){1,2}$/.test(value);
