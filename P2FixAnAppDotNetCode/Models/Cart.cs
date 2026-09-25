@@ -91,7 +91,10 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public Product FindProductInCartLines(int productId)
         {
+<<<<<<< HEAD
             //FIX Implement the method to find a product by its ID in the cart lines
+=======
+>>>>>>> 4ae7966d89c5f4a548a7fa936ebc65fb64cd13ba
             var line = GetCartLineList().FirstOrDefault(l => l.Product != null && l.Product.Id == productId);
             return line?.Product;
         }
