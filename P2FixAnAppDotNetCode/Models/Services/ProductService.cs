@@ -48,7 +48,7 @@ namespace P2FixAnAppDotNetCode.Models.Services
         /// FIX
         public void UpdateProductQuantities(Cart cart)
         {
-<<<<<<< HEAD
+
             if (cart == null)
             {
                 return;
@@ -64,14 +64,13 @@ namespace P2FixAnAppDotNetCode.Models.Services
                 _productRepository.UpdateProductStocks(
                     line.Product.Id,
                     line.Quantity);
-=======
+
             if (cart == null) return;
 
             foreach (var line in cart.Lines)
             {
                 if (line?.Product == null) continue;
                 _productRepository.UpdateProductStocks(line.Product.Id, line.Quantity);
->>>>>>> 4ae7966d89c5f4a548a7fa936ebc65fb64cd13ba
             }
         }
     }

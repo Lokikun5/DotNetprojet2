@@ -22,7 +22,6 @@ namespace P2FixAnAppDotNetCode.Models.Services
         /// </summary>
         public string SetCulture(string language)
         {
-<<<<<<< HEAD
             // FIX: Default culture is English.
             // Default culture is English.
             string culture = "en-GB";
@@ -46,7 +45,7 @@ namespace P2FixAnAppDotNetCode.Models.Services
             }
 
             return culture;
-=======
+
             if (string.IsNullOrWhiteSpace(language))
             {
                 return "en";
@@ -68,7 +67,6 @@ namespace P2FixAnAppDotNetCode.Models.Services
 
             // Default to English for any unknown value
             return "en";
->>>>>>> 4ae7966d89c5f4a548a7fa936ebc65fb64cd13ba
         }
 
         /// <summary>
