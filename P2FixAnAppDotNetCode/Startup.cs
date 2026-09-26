@@ -22,50 +22,94 @@ namespace P2FixAnAppDotNetCode
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime.
+        // Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLocalization(opts => { opts.ResourcesPath = "Resources"; });
+            services.AddLocalization(opts =>
+            {
+                opts.ResourcesPath = "Resources";
+            });
+
             services.AddSingleton<ICart, Cart>();
             services.AddSingleton<ILanguageService, LanguageService>();
+
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductRepository, ProductRepository>();
+
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IOrderRepository, OrderRepository>();
+
             services.AddMemoryCache();
             services.AddSession();
+
             services.AddMvc()
                 .AddViewLocalization(
                     LanguageViewLocationExpanderFormat.Suffix,
-                    opts => { opts.ResourcesPath = "Resources"; })
-                .AddDataAnnotationsLocalization();
+                    opts =>
+                    {
+                        opts.ResourcesPath = "Resources";
+                    })
+                .AddDataAnnotationsLocalization(options =>
+                {
+                    // FIX:
+                    // The Order model is located in Models,
+                    // but its resource files are located in
+                    // Resources/Models/ViewModels/.
+                    //
+                    // Explicitly tell ASP.NET Core which resources
+                    // must be used for Order validation messages.
+                    options.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        if (type == typeof(Order))
+                        {
+                            return factory.Create(
+                                "P2FixAnAppDotNetCode.Models.ViewModels.Order",
+                                "P2FixAnAppDotNetCode");
+                        }
+
+                        return factory.Create(type);
+                    };
+                });
 
             services.Configure<RequestLocalizationOptions>(opts =>
-            { 
+            {
                 var supportedCultures = new List<CultureInfo>
                 {
-                    new CultureInfo("en-GB"),  
+                    new CultureInfo("en-GB"),
                     new CultureInfo("fr-FR"),
-                    new CultureInfo("es-ES"),
-                    
+                    new CultureInfo("es-ES")
                 };
 
-                opts.DefaultRequestCulture = new RequestCulture("en");
-                // Formatting numbers, dates, etc.
+                // FIX:
+                // Use a culture that is actually present
+                // in the supported cultures list.
+                opts.DefaultRequestCulture =
+                    new RequestCulture("en-GB");
+
+                // Formatting numbers, dates, currencies, etc.
                 opts.SupportedCultures = supportedCultures;
-                // UI strings that we have localized.
+
+                // UI strings and validation messages.
                 opts.SupportedUICultures = supportedCultures;
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime.
+        // Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
-            var options = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+
+            var options = app.ApplicationServices
+                .GetService<IOptions<RequestLocalizationOptions>>();
+
             app.UseRequestLocalization(options.Value);
+
             app.UseSession();
+
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

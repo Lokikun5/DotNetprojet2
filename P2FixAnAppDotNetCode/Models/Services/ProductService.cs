@@ -12,7 +12,9 @@ namespace P2FixAnAppDotNetCode.Models.Services
         private readonly IProductRepository _productRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public ProductService(IProductRepository productRepository, IOrderRepository orderRepository)
+        public ProductService(
+            IProductRepository productRepository,
+            IOrderRepository orderRepository)
         {
             _productRepository = productRepository;
             _orderRepository = orderRepository;
@@ -24,36 +26,38 @@ namespace P2FixAnAppDotNetCode.Models.Services
         public List<Product> GetAllProducts()
         {
             // FIX:
-            // GetAllProducts now returns a List<Product> instead of a Product[].
+            // GetAllProducts now returns a List<Product>
+            // instead of a Product[].
             return _productRepository.GetAllProducts();
         }
 
         /// <summary>
-        /// Get a product form the inventory by its id
+        /// Get a product from the inventory by its id
         /// </summary>
         public Product GetProductById(int id)
         {
-            // Correction :
+            // FIX:
             // Search the product list and return the product
             // whose Id matches the Id received as a parameter.
             return _productRepository
                 .GetAllProducts()
                 .FirstOrDefault(p => p.Id == id);
-
         }
 
         /// <summary>
-        /// Update the quantities left for each product in the inventory depending of ordered the quantities
+        /// Update the quantities left for each product in the inventory
+        /// depending on the ordered quantities
         /// </summary>
-        /// FIX
         public void UpdateProductQuantities(Cart cart)
         {
-
+            // FIX:
+            // Stop if the cart does not exist.
             if (cart == null)
             {
                 return;
             }
 
+            // Update the stock for every product contained in the cart.
             foreach (CartLine line in cart.Lines)
             {
                 if (line?.Product == null)
@@ -64,13 +68,6 @@ namespace P2FixAnAppDotNetCode.Models.Services
                 _productRepository.UpdateProductStocks(
                     line.Product.Id,
                     line.Quantity);
-
-            if (cart == null) return;
-
-            foreach (var line in cart.Lines)
-            {
-                if (line?.Product == null) continue;
-                _productRepository.UpdateProductStocks(line.Product.Id, line.Quantity);
             }
         }
     }
