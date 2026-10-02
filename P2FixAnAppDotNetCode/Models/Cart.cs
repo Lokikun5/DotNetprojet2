@@ -34,7 +34,7 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public void AddItem(Product product, int quantity)
         {
-            //FIX
+            //FIX:
             // Search for an existing line containing the same product.
             CartLine line = GetCartLineList()
                 .FirstOrDefault(l => l.Product.Id == product.Id);
@@ -71,7 +71,7 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public double GetTotalValue()
         {
-            // FIX Total = sum of (price * quantity) for each cart line
+            // FIX: Total = sum of (price * quantity) for each cart line
             return GetCartLineList().Sum(l => (l.Product?.Price ?? 0.0) * l.Quantity);
         }
 
@@ -80,7 +80,7 @@ namespace P2FixAnAppDotNetCode.Models
         /// </summary>
         public double GetAverageValue()
         {
-            // FIX Implement the method to calculate the average value
+            // FIX: Implement the method to calculate the average value
             var cartLines = GetCartLineList();
             if (!cartLines.Any()) return 0.0;
             return cartLines.Average(l => (l.Product?.Price ?? 0.0) * l.Quantity);
@@ -92,7 +92,7 @@ namespace P2FixAnAppDotNetCode.Models
         public Product FindProductInCartLines(int productId)
         {
 
-            //FIX Implement the method to find a product by its ID in the cart lines
+            //FIX: Implement the method to find a product by its ID in the cart lines
 
             var line = GetCartLineList().FirstOrDefault(l => l.Product != null && l.Product.Id == productId);
             return line?.Product;
