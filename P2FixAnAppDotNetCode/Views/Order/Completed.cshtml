@@ -1,2 +1,9 @@
 ﻿<h2>@Localizer["Thanks"]</h2>
 <p>@Localizer["DemoEnding"]</p>
+<p>@Localizer["RedirectHomeMessage"]</p>
+
+<script>
+    setTimeout(function () {
+        window.location.href = '@Url.Action("Index", "Product")';
+    }, 10000);
+</script>

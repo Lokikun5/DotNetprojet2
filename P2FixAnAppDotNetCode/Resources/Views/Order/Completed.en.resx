@@ -123,4 +123,7 @@
   <data name="Thanks" xml:space="preserve">
     <value>Thank you!</value>
   </data>
+	<data name="RedirectHomeMessage" xml:space="preserve">
+  <value>You will be redirected to the home page in 10 seconds.</value>
+</data>
 </root>
