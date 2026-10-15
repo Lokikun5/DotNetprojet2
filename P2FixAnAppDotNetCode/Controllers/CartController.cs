@@ -28,13 +28,26 @@ namespace P2FixAnAppDotNetCode.Controllers
 
             if (product != null)
             {
+                Cart cart = _cart as Cart;
+
+                CartLine existingLine = cart.Lines
+                    .FirstOrDefault(l =>
+                        l.Product != null &&
+                        l.Product.Id == id);
+
+                int quantityInCart = existingLine?.Quantity ?? 0;
+
+                // FIX:
+                // Prevent adding more products than available in stock.
+                if (quantityInCart >= product.Stock)
+                {
+                    TempData["StockError"] = "NotEnoughStock";
+                    return RedirectToAction("Index");
+                }
                 _cart.AddItem(product, 1);
                 return RedirectToAction("Index");
             }
-            else
-            {
-                return RedirectToAction("Index", "Product");
-            }
+            return RedirectToAction("Index", "Product");
         }
 
         public RedirectToActionResult RemoveFromCart(int id)

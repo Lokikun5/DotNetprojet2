@@ -42,10 +42,9 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
         /// </summary>
         public List<Product> GetAllProducts()
         {
-            // Correction:
-            // Return a List<Product> directly instead of converting it to a Product[].
+            // FIX:
+            // Keep products visible even when their stock reaches 0.
             return _products
-                .Where(p => p.Stock > 0)
                 .OrderBy(p => p.Name)
                 .ToList();
         }
@@ -58,9 +57,11 @@ namespace P2FixAnAppDotNetCode.Models.Repositories
             Product product = _products.First(p => p.Id == productId);
             product.Stock = product.Stock - quantityToRemove;
 
-            if (product.Stock == 0)
+            // FIX:
+            // Prevent the stock from becoming negative.
+            if (product.Stock < 0)
             {
-                _products.Remove(product);
+                product.Stock = 0;
             }
         }
     }

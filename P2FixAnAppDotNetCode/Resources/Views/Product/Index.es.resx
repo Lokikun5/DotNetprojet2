@@ -135,4 +135,7 @@
   <data name="Stock" xml:space="preserve">
     <value>Stock</value>
   </data>
+<data name="OutOfStock" xml:space="preserve">
+  <value>Agotado</value>
+</data>
 </root>

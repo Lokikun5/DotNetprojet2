@@ -120,4 +120,7 @@
   <data name="YourCart" xml:space="preserve">
     <value>Votre panier</value>
   </data>
+	<data name="NotEnoughStock" xml:space="preserve">
+  <value>La quantité demandée dépasse le stock disponible.</value>
+</data>
 </root>

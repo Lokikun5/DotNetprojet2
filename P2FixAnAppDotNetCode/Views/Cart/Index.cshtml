@@ -1,4 +1,10 @@
 ﻿@model P2FixAnAppDotNetCode.Models.Cart
+@if (TempData["StockError"] != null)
+{
+    <div class="alert alert-danger">
+        @Localizer[TempData["StockError"].ToString()]
+    </div>
+}
 
 <h2>@Localizer["YourCart"]</h2>
 <table class="table table-bordered table-striped">

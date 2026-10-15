@@ -1,10 +1,12 @@
 ﻿@using P2FixAnAppDotNetCode.Models
 @model IEnumerable<P2FixAnAppDotNetCode.Models.Product>
+
 @{
     ViewData["Title"] = Localizer["ProductList"];
 }
 
-<br/>
+<br />
+
 <div id="panel-body">
     <table class="table table-bordered table-striped table-sm">
         <thead>
@@ -21,23 +23,50 @@
                 <th>
                     <label>@Localizer["Stock"]</label>
                 </th>
+                <th></th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (Product p in Model)
             {
                 <tr>
                     <td>@p.Name</td>
+
                     <td>@p.Description</td>
-                    <td style="text-align:center">@p.Price.ToString("c")</td>
-                    <td style="text-align:center">@p.Stock</td>
+
+                    <td style="text-align:center">
+                        @p.Price.ToString("c")
+                    </td>
+
+                    <td style="text-align:center">
+                        @p.Stock
+                    </td>
+
                     <td>
-                        <form id="@p.Id" asp-action="AddToCart" asp-controller="Cart" method="post">
-                            <input type="hidden" name="id" value="@p.Id" />
-                            <button type="submit" class="btn btn-primary">
-                                @Localizer["AddToCart"]
-                            </button>
-                        </form>
+                        @if (p.Stock > 0)
+                        {
+                            <form id="@p.Id"
+                                  asp-action="AddToCart"
+                                  asp-controller="Cart"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@p.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-primary">
+                                    @Localizer["AddToCart"]
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-danger font-weight-bold">
+                                @Localizer["OutOfStock"]
+                            </span>
+                        }
                     </td>
                 </tr>
             }

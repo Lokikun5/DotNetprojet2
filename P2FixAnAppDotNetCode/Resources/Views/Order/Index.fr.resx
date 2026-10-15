@@ -150,4 +150,7 @@
   <data name="Zip" xml:space="preserve">
     <value>Code postal</value>
   </data>
+	<data name="OutOfStock" xml:space="preserve">
+  <value>Rupture de stock</value>
+</data>
 </root>

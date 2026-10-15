@@ -147,4 +147,7 @@
   <data name="Average" xml:space="preserve">
     <value>Media</value>
   </data>
+	<data name="NotEnoughStock" xml:space="preserve">
+  <value>La cantidad solicitada supera el stock disponible.</value>
+</data>
 </root>
